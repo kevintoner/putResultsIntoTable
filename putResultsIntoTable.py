@@ -17,7 +17,7 @@ def getResults(start, end, saveFile):
     cont_df = pd.DataFrame()
 
     # Go through each folder for each number of frozen layers 1-5
-    for freezeNum in range(1,6):
+    for freezeNum in range(0,6): # Changed (1,6) to (0,6)
 
         # Get the json file
         fileName = folderName+str(freezeNum)+"/"+resultsFile
@@ -61,7 +61,7 @@ def getResults(start, end, saveFile):
         if cont_df.empty:
             # Convert into dataframe
             cont_df = pd.DataFrame(
-                {'category': catList, 'Freeze1': valList})
+                {'category': catList, 'Freeze0': valList})
             cont_df = cont_df.set_index('category')
         else:
             cont_df["Freeze" + str(freezeNum)] = valList
@@ -75,13 +75,15 @@ def getResults(start, end, saveFile):
     # Convert df to overleaf table
     overleafTable = cont_df.to_latex(index=True)
 
+    saveFolderName = "Tables"
+
     # Create Tables folder if it doesn't exist
-    if not os.path.exists("Tables"):
-        os.makedirs("Tables")
-        print("Tables folder created")
+    if not os.path.exists(saveFolderName):
+        os.makedirs(saveFolderName)
+        print(saveFolderName + " folder created")
 
     # Save the overleaf table to a txt file
-    with open("Tables/"+saveFile, "w") as f:
+    with open(saveFolderName+"/"+saveFile, "w") as f:
         f.write(overleafTable)
 
 
